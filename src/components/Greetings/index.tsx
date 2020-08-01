@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import { remote } from 'electron'
 
+import { initializeConnection } from '../../services/MysqlConnectionService'
+
 import { useMysql } from '../../hooks/mysql'
 
 import { Container, Header, Content, List, Button } from './styles'
@@ -25,7 +27,8 @@ const Greetings: React.FC = () => {
       alert('is missing password')
       return
     }
-    connect({ host, user, password })
+
+    initializeConnection({ host, user, password })
   }, [host, user, password])
 
   const handleResizable = useCallback(() => {

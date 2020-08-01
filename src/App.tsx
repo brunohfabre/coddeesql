@@ -1,9 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { GlobalStyle } from './styles/GlobalStyle'
+// import * as iconv from 'iconv-lite'
 
 import Greetings from './components/Greetings'
 import AppProvider from './hooks'
+// iconv.encodingExists('foo')
 
 const mainElement = document.createElement('div')
 mainElement.setAttribute('id', 'root')
