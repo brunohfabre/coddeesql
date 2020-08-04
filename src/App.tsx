@@ -1,24 +1,29 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { GlobalStyle } from './styles/GlobalStyle'
-// import * as iconv from 'iconv-lite'
+import React from 'react';
+import { render } from 'react-dom';
+import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from 'styled-components';
+import Modal from 'react-modal';
 
-import Greetings from './components/Greetings'
-import AppProvider from './hooks'
-// iconv.encodingExists('foo')
+import AppProvider from './hooks';
+import { defaultTheme } from './styles/theme';
+import { GlobalStyle } from './styles/GlobalStyle';
 
-const mainElement = document.createElement('div')
-mainElement.setAttribute('id', 'root')
-document.body.appendChild(mainElement)
+import Screen from './screen';
 
-const App = () => {
-  console.log(process.env.NODE_ENV)
+Modal.setAppElement('#root');
+
+const App: React.FC = () => {
   return (
-    <AppProvider>
-      <GlobalStyle />
-      <Greetings />
-    </AppProvider>
-  )
-}
+    <RecoilRoot>
+      <ThemeProvider theme={defaultTheme}>
+        <AppProvider>
+          <GlobalStyle />
 
-render(<App />, mainElement)
+          <Screen />
+        </AppProvider>
+      </ThemeProvider>
+    </RecoilRoot>
+  );
+};
+
+render(<App />, document.getElementById('root'));

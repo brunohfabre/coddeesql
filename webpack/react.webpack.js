@@ -25,6 +25,10 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /node_modules[\/\\](iconv-lite)[\/\\].+/,
         resolve: {
           aliasFields: ['main']
@@ -44,6 +48,9 @@ module.exports = {
     path: path.resolve(rootPath, 'dist/renderer'),
     filename: 'js/[name].js',
     publicPath: './'
+  },
+  optimization: {
+    minimize: false
   },
   plugins: [
     new HtmlWebpackPlugin({

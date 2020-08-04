@@ -1,27 +1,22 @@
-import mysql, { Connection } from 'mysql2'
+import mysql, { Connection } from 'mysql2/promise';
+import { IConnection } from '../atoms/connections';
 
-let connection: Connection
+let connection: Connection;
 
-interface ConnectionData {
-  host: string;
-  user: string;
-  password?: string;
+async function initializeConnection(
+  options: Omit<IConnection, 'name'>,
+): Promise<Connection> {
+  const response = await mysql.createConnection(options);
+
+  connection = response;
+
+  return response;
 }
 
-function initializeConnection (options: ConnectionData): void {
-  connection = mysql.createConnection(options)
-
-  connection.connect()
-}
-
-function terminateConnection (): void {
+function terminateConnection(): void {
   if (connection) {
-    connection.end()
+    connection.end();
   }
 }
 
-export {
-  connection,
-  initializeConnection,
-  terminateConnection
-}
+export { connection, initializeConnection, terminateConnection };
