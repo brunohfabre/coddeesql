@@ -1,97 +1,88 @@
-import React, { createContext, useCallback, useState, useContext } from 'react'
-import mysql from 'mysql'
-import { remote } from 'electron'
+import React, { createContext, useCallback, useState, useContext } from 'react';
+import mysql, { Connection } from 'mysql2/promise';
 
-// interface MysqlDatabasesState {
-//   token: string;
-//   user: unknown;
-// }
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import {
+  IConnection,
+  connectionErrorState,
+  databasesState,
+  currentConnectionState,
+} from '../atoms/connections';
 
-interface ConnectCredentials {
-  host: string;
-  user: string;
-  password: string;
-}
+import { useToast } from './toast';
 
 interface MysqlContextData {
-  databases: string[];
-  tables: string[];
-  connect(data: ConnectCredentials): void;
-  selectDatabase(name: string): void;
-  loadTables(): void;
+  connection: Connection | undefined;
+  connect(options: IConnection): Promise<void>;
 }
 
-const MysqlContext = createContext<MysqlContextData>({} as MysqlContextData)
-
-let connection = null
+const MysqlContext = createContext<MysqlContextData>({} as MysqlContextData);
 
 export const MysqlProvider: React.FC = ({ children }) => {
-  const [databases, setDatabases] = useState<string[]>([])
-  const [tables, setTables] = useState<string[]>([])
+  const [connectionError, setConnectionError] = useRecoilState(
+    connectionErrorState,
+  );
+  const setDatabases = useSetRecoilState(databasesState);
+  const setCurrentConnection = useSetRecoilState(currentConnectionState);
 
-  const connect = useCallback(({ host, user, password }) => {
-    connection = mysql.createConnection({
-      host,
-      user,
-      password
-    })
+  const [connection, setConnection] = useState<Connection | undefined>();
 
-    connection.connect((err) => {
-      if (err) {
-        alert('error connecting: ' + err.stack)
-        return
-      }
+  const { addToast } = useToast();
 
-      alert('connected as id ' + connection.threadId)
-    })
+  const connect = useCallback(
+    async options => {
+      try {
+        const { host, port, user, password, name } = options;
+        const connectionResult = await mysql.createConnection({
+          host,
+          port,
+          user,
+          password,
+        });
 
-    connection.query('show databases;', (err, results) => {
-      if (err) {
-        alert('error databases: ' + err)
-        return
-      }
+        setConnection(connectionResult);
 
-      setDatabases(results.map(item => item.Database))
-    })
-  }, [])
+        const [results] = await connectionResult.query('show databases;');
 
-  const selectDatabase = useCallback((name) => {
-    connection.query(`use ${name};`, (err, results) => {
-      if (err) {
-        alert('error use database: ' + err)
-        return
-      }
+        setDatabases(results.map(item => item.Database));
 
-      const window = remote.getCurrentWindow()
-
-      window.setTitle(name)
-
-      connection.query('show tables;', (err, results) => {
-        if (err) {
-          alert('error show tables: ' + err)
-          return
+        if (connectionError.name === name) {
+          setConnectionError({} as IConnection);
         }
 
-        setTables(results.map(item => item[`Tables_in_${name}`]))
-      })
-    })
-  }, [])
+        setCurrentConnection(options);
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Deu ruim',
+          description: err.message,
+        });
 
-  const loadTables = useCallback(() => { console.log('load tables') }, [])
+        setConnectionError(options);
+      }
+    },
+    [
+      addToast,
+      setConnectionError,
+      connectionError.name,
+      setCurrentConnection,
+      setDatabases,
+    ],
+  );
 
   return (
-    <MysqlContext.Provider value={{ databases, tables, connect, selectDatabase, loadTables }}>
+    <MysqlContext.Provider value={{ connection, connect }}>
       {children}
     </MysqlContext.Provider>
-  )
-}
+  );
+};
 
-export function useMysql (): MysqlContextData {
-  const context = useContext(MysqlContext)
+export function useMysql(): MysqlContextData {
+  const context = useContext(MysqlContext);
 
   if (!context) {
-    throw new Error('useMysql must be used within an MysqlProvider')
+    throw new Error('useMysql must be used within an MysqlProvider');
   }
 
-  return context
+  return context;
 }

@@ -3,7 +3,7 @@ import { shade } from 'polished';
 
 interface ContainerProps {
   isConnected: boolean;
-  isErrored: boolean;
+  isConnectionFailed: boolean;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -59,7 +59,7 @@ export const Container = styled.div<ContainerProps>`
     `}
 
   ${props =>
-    props.isErrored &&
+    props.isConnectionFailed &&
     css`
       background: ${props.theme.colors.red};
 

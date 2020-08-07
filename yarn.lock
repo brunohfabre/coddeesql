@@ -1702,6 +1702,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-table@^7.0.20":
+  version "7.0.20"
+  resolved "https://registry.yarnpkg.com/@types/react-table/-/react-table-7.0.20.tgz#761f61dc21e69082ca9efaed64a227976fb30b01"
+  integrity sha512-oonZr35vV4mNNJ/QFhxpDuyn/y7wrIbzQcRotnMqI1nKLWoOmzAYb25OjWt/UJzCuKU6AJxzNmeDYgGqvIZItg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-tabs@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/react-tabs/-/react-tabs-2.3.2.tgz#99fb6866bbc6912d44f7bbc99eca03fbbd217960"
@@ -3746,6 +3753,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.15.0.tgz#424de6b3778e4e69d3ff27046ec136af58ae5d5f"
+  integrity sha512-ZCPzAMJZn3rNUvvQIMlXhDr4A+Ar07eLeGsGREoWU19a3Pqf5oYa+ccd+B3F6XVtQY6HANMFdOQ8A+ipFnvJdQ==
 
 debounce-fn@^4.0.0:
   version "4.0.0"
@@ -8728,6 +8740,11 @@ react-spring@^8.0.27:
   dependencies:
     "@babel/runtime" "^7.3.1"
     prop-types "^15.5.8"
+
+react-table@^7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.5.0.tgz#87326d92cdffbbf970f49b395bcafc3f84989ddf"
+  integrity sha512-hLsbNqLJkkYiATVteM8mthP8y5vnLPB2qdi9FeGZjsvb2m5vxj6cavIgk35oulvBmYD6Kox0HFfI332HPZpC7w==
 
 react-tabs@^3.1.1:
   version "3.1.1"

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -28,6 +28,22 @@ export const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .react-tabs__tab-list {
+    border-bottom: 1px solid ${props => props.theme.border};
+    margin: 0;
+  }
+
+  .react-tabs__tab {
+    color: ${props => props.theme.colors.white};
+  }
+
+  .react-tabs__tab--selected {
+    border: 1px solid ${props => props.theme.border};
+    border-bottom: 0;
+    background: ${props => props.theme.backgrounds.dark};
+    /* background: tomato; */
   }
 
   .react-resizable {
@@ -83,19 +99,19 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     width: 8px;
 
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.05);
   }
-  
+
   ::-webkit-scrollbar-track {
     border-radius: 4px;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
-  }
-`
+  } */
+`;
